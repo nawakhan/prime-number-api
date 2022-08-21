@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -60,9 +62,9 @@ class PrimenogeneratorIntegrationTests {
 	@Test
 	public void getPrimeNosAlgoParallelStream() throws Exception {
 		this.mockMvc.perform(get("/api/v1/primenos/algorithmName/PARALLELSTREAM/upperLimit/11")).andDo(print())
-				.andExpect(status().isOk()).andExpect(content().string(containsString("unqiueResultId")));
+				.andExpect(status().isOk()).andExpect(jsonPath("$.primeNos").value(Matchers.contains(2,3,5,7,11)));
 	}
-	
+
 	/**
 	 * This is an integration test where the API is being mocked and we check if the
 	 * status returned is Okay HTTP status Code 200 and the Result String contains
@@ -72,8 +74,8 @@ class PrimenogeneratorIntegrationTests {
 	 */
 	@Test
 	public void getPrimeNosDefaultAlgo() throws Exception {
-		this.mockMvc.perform(get("/api/v1/primenos/upperLimit/11")).andDo(print())
-				.andExpect(status().isOk()).andExpect(content().string(containsString("unqiueResultId")));
+		this.mockMvc.perform(get("/api/v1/primenos/upperLimit/3")).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.primeNos").value(Matchers.contains(2,3)));
 	}
 
 	@Test
@@ -87,13 +89,12 @@ class PrimenogeneratorIntegrationTests {
 				.andExpect(content().string(containsString(resultId)));
 
 	}
-	
+
 	@Test
 	public void getNoneResultByResultId() throws Exception {
 		this.mockMvc.perform(get("/api/v1/primenos/dummy")).andDo(print()).andExpect(status().isOk())
-		.andExpect(content().string(containsString("Result not found for the UUID: dummy")));
+				.andExpect(content().string(containsString("Result not found for the UUID: dummy")));
 	}
-	
 
 	@Test
 	public void getAlgos() throws Exception {
