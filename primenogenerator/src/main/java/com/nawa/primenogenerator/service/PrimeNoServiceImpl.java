@@ -1,5 +1,7 @@
 package com.nawa.primenogenerator.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +26,8 @@ import com.nawa.primenogenerator.pojos.PrimeNoResults;
  */
 @Service
 public class PrimeNoServiceImpl implements PrimeNoService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(PrimeNoServiceImpl.class);
 
+	private static final Logger logger = LoggerFactory.getLogger(PrimeNoServiceImpl.class);
 
 	/**
 	 * This is in memory implementation of the Cache
@@ -63,7 +64,7 @@ public class PrimeNoServiceImpl implements PrimeNoService {
 			/**
 			 * Caching the result in the memory
 			 */
-			logger.info("Result was cached with the resultid : " +  primeNoResult.getUnqiueResultId().toString());
+			logger.info("Result was cached with the resultid : " + primeNoResult.getUnqiueResultId().toString());
 			resultCached.put(primeNoResult.getUnqiueResultId().toString(), primeNoResult);
 
 		}
@@ -80,6 +81,21 @@ public class PrimeNoServiceImpl implements PrimeNoService {
 	public Optional<PrimeNoResults> getResultByResultIdFromCache(final String resultid) {
 		return this.resultCached.values().stream()
 				.filter(result -> result.getUnqiueResultId().toString().equals(resultid)).findAny();
+	}
+
+	/**
+	 * Remove all the Results which were added before the interval
+	 */
+	@Override
+	public void clearCacheOlderThanInterval(long intervalInMinutes) {
+		List<String> keys = new ArrayList<>();
+		resultCached.values().stream()
+				.filter(p -> p.getCrtTime().compareTo(LocalDateTime.now().minusMinutes(intervalInMinutes)) < 0)
+				.forEach(k -> {
+					logger.info("Removing Key {} Created At {}", k.getUnqiueResultId().toString(), k.getCrtTime());
+					keys.add(k.getUnqiueResultId().toString());
+				});
+		keys.stream().forEach(k -> resultCached.remove(k));
 	}
 
 }

@@ -46,4 +46,11 @@ public interface PrimeNoService {
 	 */
 	Optional<PrimeNoResults> getResultByResultIdFromCache(final String resultid);
 
+	/**
+	 * Clears Cache based on a time interval
+	 * 
+	 * @param intervalInMinutes
+	 */
+	void clearCacheOlderThanInterval(long intervalInMinutes);
+
 }
