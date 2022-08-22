@@ -46,7 +46,7 @@ public class PrimeNoController {
 	 * 
 	 * @return - List of Algos
 	 */
-	@RequestMapping(value = "/algorithms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/algorithms", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value = "Get the alorithms which can be used to generate the Prime Numbers")
 	public ResponseEntity<List<String>> getAlgos() {
 		return new ResponseEntity<>(
@@ -62,7 +62,7 @@ public class PrimeNoController {
 	 *                      generated
 	 * @return
 	 */
-	@RequestMapping(value = "/upperLimit/{upperLimit}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/upperLimit/{upperLimit}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value = "Generate prime numbers till the upper limit privided, Algo will be defaulted to the ITERATIVE")
 	public ResponseEntity<PrimeNoResults> generatePrimes(
 			@ApiParam(value = "the upper limit till which the prime numbers should be generated") @PathVariable("upperLimit") Long upperLimit) {

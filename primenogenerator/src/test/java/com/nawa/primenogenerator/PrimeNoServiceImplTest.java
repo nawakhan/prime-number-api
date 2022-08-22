@@ -16,6 +16,12 @@ import com.nawa.primenogenerator.algos.PrimeGenerationAlgo;
 import com.nawa.primenogenerator.pojos.PrimeNoResults;
 import com.nawa.primenogenerator.service.PrimeNoService;
 
+/**
+ * This class contains Unit tests to test the Service
+ * 
+ * @author nawaz
+ *
+ */
 @SpringBootTest
 public class PrimeNoServiceImplTest {
 

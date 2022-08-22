@@ -21,6 +21,12 @@ import com.nawa.primenogenerator.controller.PrimeNoController;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 
+/**
+ * This class contains Integration tests
+ * 
+ * @author nawaz
+ *
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class PrimenogeneratorIntegrationTests {
@@ -64,7 +70,7 @@ class PrimenogeneratorIntegrationTests {
 		this.mockMvc.perform(get("/api/v1/primenos/algorithmName/PARALLELSTREAM/upperLimit/11")).andDo(print())
 				.andExpect(status().isOk()).andExpect(jsonPath("$.primeNos").value(Matchers.contains(2,3,5,7,11)));
 	}
-
+	
 	/**
 	 * This is an integration test where the API is being mocked and we check if the
 	 * status returned is Okay HTTP status Code 200 and the Result String contains
